@@ -4,7 +4,9 @@
   (let [p (promise)]
     (if-let [handler (routing [method path])]
       (future
-        (handler p params))
+        (try
+          (handler p params)
+          (catch Exception e [500 e])))
       (deliver p [404 nil]))
     p))
 

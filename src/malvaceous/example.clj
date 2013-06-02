@@ -1,6 +1,9 @@
 (ns malvaceous.example
-  (:require [malvaceous.controller :as c])
-  (:require [malvaceous.webserver :as w]))
+  (:require [malvaceous.controller :as c]
+            [malvaceous.model :as m]
+            [malvaceous.webserver :as w]))
+
+(def user (m/memory [:name]))
 
 (def routing
   {['get "/"] (fn [p params]
@@ -8,6 +11,7 @@
                 (deliver p
                   [200 "OK"]))
    ['post "/"] (fn [p params]
+                 (prn (deref (m/create user ["ujihisa"]) 100 :timeout-create))
                  (deliver p
                    [200 (format "welcome, %s!" (get params :name "somebody"))]))})
 
