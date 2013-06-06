@@ -3,10 +3,9 @@
 (defn- http-request [routing method path params]
   (let [p (promise)]
     (if-let [handler (routing [method path])]
-      (future
-        (try
-          (handler p params)
-          (catch Exception e [500 e])))
+      (try
+        (handler p params)
+        (catch Exception e [500 e]))
       (deliver p [404 nil]))
     p))
 
