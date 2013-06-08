@@ -1,6 +1,7 @@
 (ns malvaceous.example
   (:require [malvaceous.controller :as c]
             [malvaceous.model :as m]
+            [malvaceous.view :as v]
             [malvaceous.webserver :as w]
             [malvaceous.util :as u]))
 
@@ -10,7 +11,11 @@
   {['get "/"] (fn [p params]
                 (u/schedule 1000
                   (deliver p
-                    [200 "OK"])))
+                    [200 (v/html '(head
+                                    (title "hi!"))
+                                 '(body
+                                    (h1 "hello, world")
+                                    (p "welcome to example page!")))])))
    ['post "/"] (fn [p params]
                  (prn (deref (m/create user ["ujihisa"]) 100 :timeout-create))
                  (deliver p
